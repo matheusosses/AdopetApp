@@ -1,26 +1,18 @@
 package br.com.pets;
 
+import br.com.pets.client.ClientHttpConfiguration;
 import br.com.pets.service.AbrigoService;
 import br.com.pets.service.PetService;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.Scanner;
 
 public class AdopetConsoleApplication {
 
     public static void main(String[] args) {
-        AbrigoService abrigoService = new AbrigoService();
-        PetService petService = new PetService();
+        ClientHttpConfiguration client = new ClientHttpConfiguration();
+
+        AbrigoService abrigoService = new AbrigoService(client);
+        PetService petService = new PetService(client);
 
         System.out.println("##### BOAS VINDAS AO SISTEMA ADOPET CONSOLE #####");
         try {
@@ -55,23 +47,5 @@ public class AdopetConsoleApplication {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private static HttpResponse<String> dispararRequisicaoGet(String uri, HttpClient client) throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(uri))
-                .method("GET", HttpRequest.BodyPublishers.noBody())
-                .build();
-        return client.send(request, HttpResponse.BodyHandlers.ofString());
-    }
-
-    private static HttpResponse<String> dispararRequisicaoPost(String uri, HttpClient client, JsonObject json) throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(uri))
-                .header("Content-Type", "application/json")
-                .method("POST", HttpRequest.BodyPublishers.ofString(json.toString()))
-                .build();
-
-        return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 }
