@@ -1,6 +1,7 @@
 package br.com.pets.service;
 
 import br.com.pets.client.ClientHttpConfiguration;
+import br.com.pets.domain.Abrigo;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -12,7 +13,7 @@ import java.util.Scanner;
 
 public class AbrigoService {
 
-    private ClientHttpConfiguration client;
+    private final ClientHttpConfiguration client;
 
     public AbrigoService(ClientHttpConfiguration client) {
         this.client = client;
@@ -42,14 +43,11 @@ public class AbrigoService {
         System.out.println("Digite o email do abrigo:");
         String email = new Scanner(System.in).nextLine();
 
-        JsonObject json = new JsonObject();
-        json.addProperty("nome", nome);
-        json.addProperty("telefone", telefone);
-        json.addProperty("email", email);
+        Abrigo abrigo = new Abrigo(nome, telefone, email);
 
         String uri = "http://localhost:8080/abrigos";
 
-        HttpResponse<String> response = client.dispararRequisicaoPost(uri, json);
+        HttpResponse<String> response = client.dispararRequisicaoPost(uri, abrigo);
 
         int statusCode = response.statusCode();
         String responseBody = response.body();
