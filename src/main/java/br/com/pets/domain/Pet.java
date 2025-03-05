@@ -1,8 +1,10 @@
 package br.com.pets.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class Pet {
     private Long id;
     private String tipo;
