@@ -1,6 +1,10 @@
 package br.com.pets.domain;
 
+import lombok.Getter;
+
+@Getter
 public class Abrigo {
+    private Long id;
     private String nome;
     private String telefone;
     private String email;

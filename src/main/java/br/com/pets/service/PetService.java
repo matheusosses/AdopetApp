@@ -2,15 +2,14 @@ package br.com.pets.service;
 
 import br.com.pets.client.ClientHttpConfiguration;
 import br.com.pets.domain.Pet;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class PetService {
@@ -33,15 +32,15 @@ public class PetService {
             System.out.println("ID ou nome não cadastrado!");
         }
         String responseBody = response.body();
-        JsonArray jsonArray = JsonParser.parseString(responseBody).getAsJsonArray();
+        Pet[] pets = new ObjectMapper().readValue(responseBody, Pet[].class);
+        List<Pet> petList = Arrays.stream(pets).toList();
         System.out.println("Pets cadastrados:");
-        for (JsonElement element : jsonArray) {
-            JsonObject jsonObject = element.getAsJsonObject();
-            long id = jsonObject.get("id").getAsLong();
-            String tipo = jsonObject.get("tipo").getAsString();
-            String nome = jsonObject.get("nome").getAsString();
-            String raca = jsonObject.get("raca").getAsString();
-            int idade = jsonObject.get("idade").getAsInt();
+        for (Pet pet : petList) {
+            long id = pet.getId();
+            String tipo = pet.getTipo();
+            String nome = pet.getNome();
+            String raca = pet.getRaca();
+            int idade = pet.getIdade();
             System.out.println(id +" - " +tipo +" - " +nome +" - " +raca +" - " +idade +" ano(s)");
         }
     }
@@ -67,7 +66,7 @@ public class PetService {
             String raca = campos[2];
             int idade = Integer.parseInt(campos[3]);
             String cor = campos[4];
-            Float peso = Float.parseFloat(campos[5]);
+            float peso = Float.parseFloat(campos[5]);
 
             Pet pet = new Pet(tipo, nome, raca, idade, cor, peso);
 

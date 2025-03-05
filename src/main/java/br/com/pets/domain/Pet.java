@@ -1,6 +1,10 @@
 package br.com.pets.domain;
 
+import lombok.Getter;
+
+@Getter
 public class Pet {
+    private Long id;
     private String tipo;
     private String nome;
     private String raca;
@@ -16,4 +20,6 @@ public class Pet {
         this.cor = cor;
         this.peso = peso;
     }
+
+
 }
